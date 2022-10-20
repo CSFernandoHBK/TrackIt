@@ -1,15 +1,38 @@
+import axios from "axios";
+import { useState } from "react"
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components"
 import logo from "../../assets/images/logo.png"
+import { urlAPI } from "../../constants/urls";
 
 export default function RegistrationPage() {
+
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [nome, setNome] = useState("");
+    const [foto, setFoto] = useState("");
+    const navigate = useNavigate();
+
+    function sendRegister(event){
+        event.preventDefault();
+        const requisicao = axios.post(`${urlAPI}/auth/sign-up`, {
+            email: email,
+            name: nome,
+            image: foto,
+            password: password
+        })
+        requisicao.then(() => navigate("/"))
+        requisicao.catch((erro) => console.log(erro))
+    }
+
     return(
         <Container>
             <img src={logo} alt="logo trackit"/>
-            <Form>
-                <input type="email" placeholder="email"/>
-                <input type="password" placeholder="senha"/>
-                <input type="text" placeholder="nome"/>
-                <input type="link" placeholder="foto"/>
+            <Form onSubmit={sendRegister}>
+                <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="email" required/>
+                <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="senha" required/>
+                <input type="text" value={nome} onChange={(e) => setNome(e.target.value)} placeholder="nome" required/>
+                <input type="link" value={foto} onChange={(e) => setFoto(e.target.value)} placeholder="foto" required/>
                 <button type="submit">Cadastrar</button>
             </Form>
             <p>Já tem uma conta? Faça login!</p>

@@ -1,13 +1,18 @@
+import { useState } from "react"
 import styled from "styled-components"
 import logo from "../../assets/images/logo.png"
 
 export default function LoginPage() {
+
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
     return(
         <Container>
             <img src={logo} alt="logo trackit"/>
             <Form>
-                <input type="email" placeholder="email"/>
-                <input type="password" placeholder="senha"/>
+                <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="email" required/>
+                <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="senha" required/>
                 <button type="submit">Entrar</button>
             </Form>
             <p>Não tem uma conta? Cadastre-se!</p>
