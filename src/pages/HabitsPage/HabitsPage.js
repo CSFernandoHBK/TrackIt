@@ -10,12 +10,9 @@ export default function HabitsPage() {
             <Content>
                 <div>
                     <p>Meus hábitos</p>
-                    <button>+</button>
+                    <button onClick={() => (alert("Adicionar hábito"))}>+</button>
                 </div>
-                <div>
-                    <SettingUpHabit/>
-                    <SettingUpHabit/>
-                </div>
+                <SettingUpHabit/>
             </Content>
             <Footer />
         </Container>
@@ -29,7 +26,7 @@ const Container = styled.div`
 `
 
 const Content = styled.div`
-    div{
+    & > div:nth-child(1){
         display:flex;
         justify-content: space-between;
         margin: 26px 0 20px;
