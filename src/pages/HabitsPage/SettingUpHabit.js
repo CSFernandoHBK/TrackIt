@@ -2,20 +2,32 @@ import { useState } from "react"
 import styled from "styled-components"
 import Weekday from "./Weekday";
 import {daysAb} from "../../constants/days";
+import axios from "axios";
+import { urlAPI } from "../../constants/urls";
 
 export default function SettingUpHabit() {
 
     const [nome, setNome] = useState("");
-    const [diasSelecionados, setDiasSelecionados] = useState([]);
+    const [indexDiasSelecionados, setIndexDiasSelecionados] = useState([]);
+
+    function sendHabit(event){
+        event.preventDefault();
+        const requisicao = axios.post(`${urlAPI}habits`, {
+            name: nome,
+            days: indexDiasSelecionados
+        })
+        requisicao.then()
+    }
 
     return (
         <Container>
             <input value={nome} onChange={(e) => setNome(e.target.value)} placeholder="nome do hábito" />
             <ContainerSemana>
                 {daysAb.map((d, index) => 
-                <Weekday dia={d} 
-                diasSelecionados={diasSelecionados}
-                setDiasSelecionados={setDiasSelecionados}
+                <Weekday dia={d}
+                index={index} 
+                indexDiasSelecionados={indexDiasSelecionados}
+                setIndexDiasSelecionados={setIndexDiasSelecionados}
                 key={index}/>)}
             </ContainerSemana>
             <div>

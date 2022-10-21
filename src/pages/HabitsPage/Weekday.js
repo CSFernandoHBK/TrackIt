@@ -3,19 +3,26 @@ import styled from "styled-components";
 
 export default function Weekday(props) {
 
-    const {dia, diasSelecionados, setDiasSelecionados} = props;
+    const {dia, index, indexDiasSelecionados, setIndexDiasSelecionados} = props;
 
     const [clicado, setClicado] = useState(false);
 
-    function incluirDia(dia){
+    function incluirDia(index){
+        if(indexDiasSelecionados.includes(index)){
+            const arrayFiltrada = indexDiasSelecionados.filter((v) => (v !== index))
+            setIndexDiasSelecionados(arrayFiltrada);
+            return(
+                setClicado(!clicado)
+            )
+        }
         setClicado(!clicado);
-        setDiasSelecionados(...diasSelecionados, dia);
+        setIndexDiasSelecionados([...indexDiasSelecionados, index]);
     }
 
-    console.log(diasSelecionados);
+    console.log(indexDiasSelecionados);
 
     return(
-        <Day onClick={() => incluirDia({dia})} 
+        <Day onClick={() => incluirDia(index)} 
         clicado={clicado}>
             {dia}
         </Day>

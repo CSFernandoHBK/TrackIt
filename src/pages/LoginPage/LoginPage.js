@@ -17,7 +17,7 @@ export default function LoginPage() {
             email: email,
             password: password
         })
-        requisicao.then(() => navigate("/hoje"))
+        requisicao.then((resp) => console.log(resp)/*navigate("/hoje")*/)
         requisicao.catch((erro) => console.log(erro))
     }
 

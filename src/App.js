@@ -5,8 +5,12 @@ import HabitsPage from "./pages/HabitsPage/HabitsPage";
 import RegistrationPage from "./pages/RegistrationPage/RegistrationPage";
 import TodayPage from "./pages/TodayPage/TodayPage";
 import HistoryPage from "./pages/HistoryPage/HistoryPage";
+import { useState } from "react";
 
 export default function App() {
+
+  const[user, setUser] = useState();
+
   return (
     <>
       <GlobalStyle />
