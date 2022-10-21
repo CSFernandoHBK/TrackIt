@@ -1,21 +1,37 @@
+import axios from "axios";
 import { useState } from "react"
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components"
 import logo from "../../assets/images/logo.png"
+import { urlAPI } from "../../constants/urls";
 
 export default function LoginPage() {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const navigate = useNavigate();
+
+    function sendLogin(event){
+        event.preventDefault();
+        const requisicao = axios.post(`${urlAPI}auth/login`, {
+            email: email,
+            password: password
+        })
+        requisicao.then(() => navigate("/hoje"))
+        requisicao.catch((erro) => console.log(erro))
+    }
 
     return(
         <Container>
             <img src={logo} alt="logo trackit"/>
-            <Form>
+            <Form onSubmit={sendLogin}>
                 <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="email" required/>
                 <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="senha" required/>
                 <button type="submit">Entrar</button>
             </Form>
-            <p>Não tem uma conta? Cadastre-se!</p>
+            <Link to={"/cadastro"}>
+                <p>Não tem uma conta? Cadastre-se!</p>
+            </Link>
         </Container>
     )
 }

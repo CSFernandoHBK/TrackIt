@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState } from "react"
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components"
 import logo from "../../assets/images/logo.png"
 import { urlAPI } from "../../constants/urls";
@@ -15,7 +15,7 @@ export default function RegistrationPage() {
 
     function sendRegister(event){
         event.preventDefault();
-        const requisicao = axios.post(`${urlAPI}/auth/sign-up`, {
+        const requisicao = axios.post(`${urlAPI}auth/sign-up`, {
             email: email,
             name: nome,
             image: foto,
@@ -35,7 +35,9 @@ export default function RegistrationPage() {
                 <input type="link" value={foto} onChange={(e) => setFoto(e.target.value)} placeholder="foto" required/>
                 <button type="submit">Cadastrar</button>
             </Form>
-            <p>Já tem uma conta? Faça login!</p>
+            <Link to={"/"}>
+                <p>Já tem uma conta? Faça login!</p>
+            </Link>
         </Container>
     )
 }
