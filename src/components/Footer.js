@@ -1,11 +1,12 @@
+import { Link } from "react-router-dom"
 import styled from "styled-components"
 
 export default function Footer() {
     return(
         <Container>
-            <p>Hábitos</p>
-            <HabitMeter>Hoje</HabitMeter>
-            <p>Histórico</p>
+            <Link to={"/habitos"}><p>Hábitos</p></Link>
+            <Link to={"/hoje"}><HabitMeter>Hoje</HabitMeter></Link>
+            <Link to={"/historico"}><p>Histórico</p></Link>
         </Container>
     )
 }
@@ -25,6 +26,10 @@ const Container = styled.div`
         font-size: 17.976px;
         line-height: 22px;
         color: #52B6FF;
+    }
+
+    a{
+        text-decoration: none;
     }
 `
 

@@ -1,9 +1,18 @@
+import { useState } from "react"
 import styled from "styled-components"
 
 export default function SettingUpHabit() {
+
+    const [nome, setNome] = useState("");
+    const [dias, setDias] = useState([]);
+
+    function incluirDia(){
+        
+    }
+
     return (
         <Container>
-            <input placeholder="nome do hábito" />
+            <input value={nome} onChange={(e) => setNome(e.target.value)} placeholder="nome do hábito" />
             <ContainerSemana>
                 <button>D</button>
                 <button>S</button>
