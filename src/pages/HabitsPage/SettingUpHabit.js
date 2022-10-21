@@ -1,30 +1,26 @@
 import { useState } from "react"
 import styled from "styled-components"
+import Weekday from "./Weekday";
+import {daysAb} from "../../constants/days";
 
 export default function SettingUpHabit() {
 
     const [nome, setNome] = useState("");
-    const [dias, setDias] = useState([]);
-
-    function incluirDia(){
-        
-    }
+    const [diasSelecionados, setDiasSelecionados] = useState([]);
 
     return (
         <Container>
             <input value={nome} onChange={(e) => setNome(e.target.value)} placeholder="nome do hábito" />
             <ContainerSemana>
-                <button>D</button>
-                <button>S</button>
-                <button>T</button>
-                <button>Q</button>
-                <button>Q</button>
-                <button>S</button>
-                <button>S</button>
+                {daysAb.map((d, index) => 
+                <Weekday dia={d} 
+                diasSelecionados={diasSelecionados}
+                setDiasSelecionados={setDiasSelecionados}
+                key={index}/>)}
             </ContainerSemana>
             <div>
                 <div onClick={() => (alert("cancelado"))}>Cancelar</div>
-                <SaveButton>Salvar</SaveButton>
+                <SaveButton onClick={() => (alert("salvo"))}>Salvar</SaveButton>
             </div>
         </Container>
     )
@@ -35,16 +31,6 @@ const ContainerSemana = styled.div`
     justify-content: flex-start;
     margin-top: 8px;
     margin-bottom: 30px;
-
-    & > button{
-        background: #FFFFFF;
-        border: 1px solid #D5D5D5;
-        border-radius: 5px;
-        font-size: 19.976px;
-        line-height: 25px;
-        color: #DBDBDB;
-        margin-right: 5px;
-    } 
 `
 
 const Container = styled.div`

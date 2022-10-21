@@ -1,15 +1,19 @@
+import { useState } from "react";
 import styled from "styled-components";
 import completed from "../../assets/images/completed.png";
 
 export default function HabitCard() {
+
+    const [concluido, setConcluido] = useState(false)
+
     return(
-        <Container>
+        <Container concluido={concluido}>
             <div>
                 <h1>Ler 1 capítulo de livro</h1>
                 <h2>Sequência atual: 3 dias</h2>
                 <h2>Seu recorde: 5 dias</h2>
             </div>
-            <div>
+            <div onClick={() => setConcluido(!concluido)}>
                 <img src={completed}/>
             </div>
         </Container>
@@ -37,7 +41,7 @@ const Container = styled.div`
         display: flex;
         justify-content: center;
         align-items: center;
-        background: #EBEBEB;
+        background: ${(props) => (props.concluido ? "#8FC549" : "#EBEBEB")};
         border: 1px solid #E7E7E7;
         border-radius: 5px;
     }
