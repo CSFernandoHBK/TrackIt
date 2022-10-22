@@ -19,8 +19,6 @@ export default function Weekday(props) {
         setIndexDiasSelecionados([...indexDiasSelecionados, index]);
     }
 
-    console.log(indexDiasSelecionados);
-
     return(
         <Day onClick={() => incluirDia(index)} 
         clicado={clicado}>

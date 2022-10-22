@@ -1,11 +1,14 @@
 import styled from "styled-components"
-import { urlPerfil } from "../constants/urls"
+import { useContext } from "react"
+import { AuthContext } from "../context/auth"
 
 export default function Header() {
+    const {InfoUser} = useContext(AuthContext);
+
     return(
         <Container>
             <p>TrackIt</p>
-            <img src={urlPerfil}/>
+            <img src={null}/>
         </Container>
     )
 }

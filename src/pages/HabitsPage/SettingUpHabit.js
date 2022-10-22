@@ -1,22 +1,31 @@
-import { useState } from "react"
+import { useState, useContext } from "react"
 import styled from "styled-components"
 import Weekday from "./Weekday";
 import {daysAb} from "../../constants/days";
 import axios from "axios";
 import { urlAPI } from "../../constants/urls";
+import { AuthContext } from "../../context/auth";
 
 export default function SettingUpHabit() {
+
+    const {infoUser} = useContext(AuthContext);
 
     const [nome, setNome] = useState("");
     const [indexDiasSelecionados, setIndexDiasSelecionados] = useState([]);
 
-    function sendHabit(event){
-        event.preventDefault();
+    function sendHabit(){
+
+        const config = {
+            headers: {
+                "Authorization": `Bearer ${infoUser.token}`
+            }
+        }
+
         const requisicao = axios.post(`${urlAPI}habits`, {
             name: nome,
             days: indexDiasSelecionados
-        })
-        requisicao.then()
+        }, config)
+        requisicao.then((e) => console.log(e))
     }
 
     return (
@@ -32,7 +41,7 @@ export default function SettingUpHabit() {
             </ContainerSemana>
             <div>
                 <div onClick={() => (alert("cancelado"))}>Cancelar</div>
-                <SaveButton onClick={() => (alert("salvo"))}>Salvar</SaveButton>
+                <SaveButton onClick={() => sendHabit()}>Salvar</SaveButton>
             </div>
         </Container>
     )

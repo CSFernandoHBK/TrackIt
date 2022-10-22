@@ -1,15 +1,22 @@
 import axios from "axios";
-import { useState } from "react"
+import { useState , useContext} from "react"
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components"
 import logo from "../../assets/images/logo.png"
 import { urlAPI } from "../../constants/urls";
+import { AuthContext } from "../../context/auth";
 
-export default function LoginPage() {
+export default function LoginPage(props) {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const {infoUser,setInfoUser} = useContext(AuthContext);
     const navigate = useNavigate();
+
+    function configData(resp){
+        setInfoUser(resp.data);
+        navigate("/hoje");
+    }
 
     function sendLogin(event){
         event.preventDefault();
@@ -17,8 +24,8 @@ export default function LoginPage() {
             email: email,
             password: password
         })
-        requisicao.then((resp) => console.log(resp)/*navigate("/hoje")*/)
-        requisicao.catch((erro) => console.log(erro))
+        requisicao.then((resp) => configData(resp))
+        requisicao.catch((erro) => alert(erro.response.data.message))
     }
 
     return(

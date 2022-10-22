@@ -6,22 +6,23 @@ import RegistrationPage from "./pages/RegistrationPage/RegistrationPage";
 import TodayPage from "./pages/TodayPage/TodayPage";
 import HistoryPage from "./pages/HistoryPage/HistoryPage";
 import { useState } from "react";
+import AuthProvider from "./context/auth";
 
 export default function App() {
-
-  const[user, setUser] = useState();
 
   return (
     <>
       <GlobalStyle />
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<LoginPage/>}/>
-          <Route path="/cadastro" element={<RegistrationPage/>}/>
-          <Route path="/habitos" element={<HabitsPage/>}/>
-          <Route path="/hoje" element={<TodayPage/>}/>
-          <Route path="/historico" element={<HistoryPage/>}/>
-        </Routes>
+        <AuthProvider>
+          <Routes>
+            <Route path="/" element={<LoginPage/>} />
+            <Route path="/cadastro" element={<RegistrationPage />} />
+            <Route path="/habitos" element={<HabitsPage />} />
+            <Route path="/hoje" element={<TodayPage />} />
+            <Route path="/historico" element={<HistoryPage />} />
+          </Routes>
+        </AuthProvider>
       </BrowserRouter>
     </>
   )
