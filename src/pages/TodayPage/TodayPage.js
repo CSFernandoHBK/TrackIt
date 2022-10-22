@@ -2,20 +2,60 @@ import styled from "styled-components";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 import HabitCard from "./HabitCard";
+import { useEffect, useContext, useState } from "react";
+import { AuthContext } from "../../context/auth";
+import { urlAPI } from "../../constants/urls";
+import axios from "axios";
+import dayjs from "dayjs";
 
 export default function TodayPage() {
+    const {infoUser} = useContext(AuthContext);
+    const [habitosHoje, setHabitosHoje] = useState([]);
+    
+    dayjs.locale('pt-br')
+    let now = dayjs().format('dddd, DD/MM')
+    // console.log(dayjs().day())
+    // console.log(dayjs().date())
+    // console.log(dayjs().month())
+    console.log(now);
+
+    const config = {
+        headers: {
+            "Authorization": `Bearer ${infoUser.token}`
+        }
+    }
+
+    useEffect(() => {
+        const requisicao = axios.get(`${urlAPI}habits/today`, config);
+        requisicao.then((e) => setHabitosHoje(e.data));
+        requisicao.catch((e) => alert(e.response.data.message));
+    }, []);
+
+    if(habitosHoje === undefined){
+        return(<div>Carregando</div>)
+    }
+
+    if(habitosHoje === null){
+        return(<div>Nenhum hábito hoje</div>)
+    }
+
     return(
         <Container>
             <Header/>
             <Content>
                 <div>
-                    <h1>Segunda, 17/05</h1>
+                    <h1>{now}</h1>
                     <h2>Nenhum hábito concluído ainda</h2>
                 </div>
-                <HabitCard/>
-                <HabitCard/>
-                <HabitCard/>
-                <HabitCard/>
+                {habitosHoje.map((h, index) => 
+                <HabitCard 
+                name={h.name} 
+                id={h.id}
+                done={h.done}
+                currentSequence={h.currentSequence}
+                highestSequence={h.highestSequence}
+                key={index}
+                />)}
             </Content>
             <Footer/>
         </Container>

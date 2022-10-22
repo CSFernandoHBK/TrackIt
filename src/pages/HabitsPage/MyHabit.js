@@ -1,3 +1,4 @@
+import { useState } from "react";
 import styled from "styled-components";
 import deleteIcon from "../../assets/images/deleteIcon.png";
 import { daysAb } from "../../constants/days";
@@ -6,17 +7,29 @@ export default function MyHabit(props) {
     
     const {name, days, id} = props;
 
+    function verificarDia(index){
+        if(days.includes(index)){
+            return(true)
+        } else {
+            return(false)
+        }
+    }
+
+    function excluirHabito(){
+        alert("Habito excluido")
+    }
+
     return (
         <Container>
             <div>
                 <h1>{name}</h1>
                 <div>
                     {daysAb.map((d, index) => (
-                        <Day index={index} key={index}>{d}</Day>
+                        <Weekday index={index} verificarDia={verificarDia} key={index}>{d}</Weekday>
                     ))}
                 </div>
             </div>
-            <img onClick={() => alert("Habito excluido")} src={deleteIcon} />
+            <img onClick={() => excluirHabito()} src={deleteIcon} />
         </Container>
     )
 }
@@ -47,8 +60,8 @@ const Container = styled.div`
     }
 `
 
-const Day = styled.div`
-    background: ${(props) => (props.clicado ? "#CFCFCF" : "#FFFFFF")};
+const Weekday = styled.div`
+    background: ${(props) => (props.verificarDia(props.index) ? "#CFCFCF" : "#FFFFFF")};
     border: 1px solid #D5D5D5;
     border-radius: 5px;
     width: 30px;
@@ -58,6 +71,7 @@ const Day = styled.div`
     align-items: center;
     font-size: 19.976px;
     line-height: 25px;
-    color: ${(props) => (props.clicado ? "#FFFFFF" : "#CFCFCF")};
+    color: ${(props) => (props.verificarDia(props.index) ? "#FFFFFF" : "#CFCFCF")};
     margin-right: 5px;
 `
+

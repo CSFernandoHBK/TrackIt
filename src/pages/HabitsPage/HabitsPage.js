@@ -22,7 +22,8 @@ export default function HabitsPage() {
     useEffect(() => {
         const requisicao = axios.get(`${urlAPI}habits`, config);
         requisicao.then((e) => setListaHabitos(e.data));
-    });
+        requisicao.catch((e) => alert(e.response.data.message));
+    }, []);
 
     return (
         <Container>

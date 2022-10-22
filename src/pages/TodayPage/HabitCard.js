@@ -2,16 +2,22 @@ import { useState } from "react";
 import styled from "styled-components";
 import completed from "../../assets/images/completed.png";
 
-export default function HabitCard() {
+export default function HabitCard(props) {
+
+    const {name, id, done, currentSequence, highestSequence} = props;
 
     const [concluido, setConcluido] = useState(false)
+
+    function concluirHabito(){
+        
+    }
 
     return(
         <Container concluido={concluido}>
             <div>
-                <h1>Ler 1 capítulo de livro</h1>
-                <h2>Sequência atual: 3 dias</h2>
-                <h2>Seu recorde: 5 dias</h2>
+                <h1>{name}</h1>
+                <h2>Sequência atual: {currentSequence} dias</h2>
+                <h2>Seu recorde: {highestSequence} dias</h2>
             </div>
             <div onClick={() => setConcluido(!concluido)}>
                 <img src={completed}/>
