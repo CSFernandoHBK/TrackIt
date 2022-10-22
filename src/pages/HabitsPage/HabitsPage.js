@@ -1,9 +1,29 @@
+import axios from "axios";
+import { useEffect, useContext, useState } from "react";
 import styled from "styled-components";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 import SettingUpHabit from "./SettingUpHabit";
+import { urlAPI } from "../../constants/urls";
+import { AuthContext } from "../../context/auth";
+import MyHabit from "./MyHabit";
 
 export default function HabitsPage() {
+
+    const [listaHabitos, setListaHabitos] = useState([]);
+    const {infoUser} = useContext(AuthContext);
+
+    const config = {
+        headers: {
+            "Authorization": `Bearer ${infoUser.token}`
+        }
+    }
+
+    useEffect(() => {
+        const requisicao = axios.get(`${urlAPI}habits`, config);
+        requisicao.then((e) => setListaHabitos(e.data));
+    });
+
     return (
         <Container>
             <Header />
@@ -13,6 +33,7 @@ export default function HabitsPage() {
                     <button onClick={() => (alert("Adicionar hábito"))}>+</button>
                 </div>
                 <SettingUpHabit/>
+                {listaHabitos.map((h, index) => <MyHabit name={h.name} days={h.days} id={h.id} key={index}/>)}
             </Content>
             <Footer />
         </Container>

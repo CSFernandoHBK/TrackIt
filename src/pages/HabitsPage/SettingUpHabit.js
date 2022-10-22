@@ -26,6 +26,7 @@ export default function SettingUpHabit() {
             days: indexDiasSelecionados
         }, config)
         requisicao.then((e) => console.log(e))
+        requisicao.catch((e) => console.log(e))
     }
 
     return (
