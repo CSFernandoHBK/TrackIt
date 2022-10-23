@@ -1,11 +1,14 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import styled from "styled-components";
 import deleteIcon from "../../assets/images/deleteIcon.png";
 import { daysAb } from "../../constants/days";
+import { urlAPI } from "../../constants/urls";
+import { AuthContext } from "../../context/auth";
+import axios from "axios";
 
 export default function MyHabit(props) {
-    
     const {name, days, id} = props;
+    const {infoUser} = useContext(AuthContext);
 
     function verificarDia(index){
         if(days.includes(index)){
@@ -16,7 +19,15 @@ export default function MyHabit(props) {
     }
 
     function excluirHabito(){
-        alert("Habito excluido")
+        const config = {
+            headers: {
+                "Authorization": `Bearer ${infoUser.token}`
+            }
+        }
+
+        const requisicao = axios.delete(`${urlAPI}habits/${id}`, config)
+        requisicao.then((e) => console.log(e))
+        requisicao.catch((e) => console.log(e))
     }
 
     return (

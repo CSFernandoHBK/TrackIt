@@ -1,25 +1,44 @@
-import { useState } from "react";
-import styled from "styled-components";
+import { useState, useContext } from "react"
+import styled from "styled-components"
+import axios from "axios";
+import { urlAPI } from "../../constants/urls";
+import { AuthContext } from "../../context/auth";
 import completed from "../../assets/images/completed.png";
 
 export default function HabitCard(props) {
-
     const {name, id, done, currentSequence, highestSequence} = props;
+    const {infoUser} = useContext(AuthContext);
+    const [concluido, setConcluido] = useState(done);
+    const [seqAtual, setSeqAtual] = useState(currentSequence);
+    const [seqMaisAlta, setSeqMaisAlta] = useState(highestSequence);
 
-    const [concluido, setConcluido] = useState(false)
+    function completeHabit(){
+        const config = {
+            headers: {
+                "Authorization": `Bearer ${infoUser.token}`
+            }
+        }
 
-    function concluirHabito(){
+        const requisicao = axios.post(`${urlAPI}habits/${id}/check`, {}, config)
+        requisicao.then((e) => console.log(e))
+        requisicao.catch((e) => console.log(e))
         
+        setConcluido(!concluido)
+        setSeqAtual(seqAtual + 1);
+    }
+
+    if(seqAtual > seqMaisAlta){
+        setSeqMaisAlta(seqMaisAlta+1);
     }
 
     return(
         <Container concluido={concluido}>
             <div>
                 <h1>{name}</h1>
-                <h2>Sequência atual: {currentSequence} dias</h2>
-                <h2>Seu recorde: {highestSequence} dias</h2>
+                <h2>Sequência atual: {seqAtual} dias</h2>
+                <h2>Seu recorde: {seqMaisAlta} dias</h2>
             </div>
-            <div onClick={() => setConcluido(!concluido)}>
+            <div onClick={() => completeHabit()}>
                 <img src={completed}/>
             </div>
         </Container>

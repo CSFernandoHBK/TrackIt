@@ -21,6 +21,7 @@ const Container = styled.div`
     justify-content: space-between;
     align-items: center;
     padding: 0 36px 0;
+    margin-top: 70px;
 
     p{
         font-size: 17.976px;

@@ -9,9 +9,9 @@ import { AuthContext } from "../../context/auth";
 import MyHabit from "./MyHabit";
 
 export default function HabitsPage() {
-
     const [listaHabitos, setListaHabitos] = useState([]);
     const {infoUser} = useContext(AuthContext);
+    const [isActiveNewHabit, setIsActiveNewHabit] = useState(false);
 
     const config = {
         headers: {
@@ -23,7 +23,7 @@ export default function HabitsPage() {
         const requisicao = axios.get(`${urlAPI}habits`, config);
         requisicao.then((e) => setListaHabitos(e.data));
         requisicao.catch((e) => alert(e.response.data.message));
-    }, []);
+    }, [listaHabitos]);
 
     return (
         <Container>
@@ -31,9 +31,9 @@ export default function HabitsPage() {
             <Content>
                 <div>
                     <p>Meus hábitos</p>
-                    <button onClick={() => (alert("Adicionar hábito"))}>+</button>
+                    <button onClick={() => (setIsActiveNewHabit(!isActiveNewHabit))}>+</button>
                 </div>
-                <SettingUpHabit/>
+                {(isActiveNewHabit ? <SettingUpHabit/> : null)}
                 {listaHabitos.map((h, index) => <MyHabit name={h.name} days={h.days} id={h.id} key={index}/>)}
             </Content>
             <Footer />

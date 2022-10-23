@@ -17,7 +17,6 @@ export default function TodayPage() {
     // console.log(dayjs().day())
     // console.log(dayjs().date())
     // console.log(dayjs().month())
-    console.log(now);
 
     const config = {
         headers: {
