@@ -10,6 +10,7 @@ import MyHabit from "./MyHabit";
 
 export default function HabitsPage() {
     const [listaHabitos, setListaHabitos] = useState([]);
+    const [render, setRender] = useState(false);
     const {infoUser} = useContext(AuthContext);
     const [isActiveNewHabit, setIsActiveNewHabit] = useState(false);
 
@@ -23,18 +24,39 @@ export default function HabitsPage() {
         const requisicao = axios.get(`${urlAPI}habits`, config);
         requisicao.then((e) => setListaHabitos(e.data));
         requisicao.catch((e) => alert(e.response.data.message));
-    }, [listaHabitos]);
+    }, [render]);
+
+    if(listaHabitos === null){
+        return(
+            <h3>
+                Você não tem nenhum hábito
+            </h3>
+        )
+    }
 
     return (
         <Container>
-            <Header />
+            <Header imagem={infoUser.image}/>
             <Content>
                 <div>
                     <p>Meus hábitos</p>
                     <button onClick={() => (setIsActiveNewHabit(!isActiveNewHabit))}>+</button>
                 </div>
-                {(isActiveNewHabit ? <SettingUpHabit/> : null)}
-                {listaHabitos.map((h, index) => <MyHabit name={h.name} days={h.days} id={h.id} key={index}/>)}
+                {(isActiveNewHabit ? 
+                <SettingUpHabit
+                isActiveNewHabit={isActiveNewHabit}
+                setIsActiveNewHabit={setIsActiveNewHabit}
+                render={render}
+                setRender={setRender}/> 
+                : null)}
+                {listaHabitos.map((h, index) => 
+                <MyHabit name={h.name} 
+                days={h.days} 
+                id={h.id}
+                setRender={setRender}
+                render={render}
+                key={index}
+                />)}
             </Content>
             <Footer />
         </Container>
@@ -43,8 +65,8 @@ export default function HabitsPage() {
 
 const Container = styled.div`
     background: #E5E5E5;
-    height: 100vh;
     width: 100vw;
+    padding-bottom: 120px;
 `
 
 const Content = styled.div`

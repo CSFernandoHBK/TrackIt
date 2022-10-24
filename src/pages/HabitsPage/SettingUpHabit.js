@@ -6,27 +6,30 @@ import axios from "axios";
 import { urlAPI } from "../../constants/urls";
 import { AuthContext } from "../../context/auth";
 
-export default function SettingUpHabit() {
-
+export default function SettingUpHabit(props) {
+    const {isActiveNewHabit, setIsActiveNewHabit, render, setRender} = props;
     const {infoUser} = useContext(AuthContext);
-
     const [nome, setNome] = useState("");
     const [indexDiasSelecionados, setIndexDiasSelecionados] = useState([]);
 
     function sendHabit(){
-
         const config = {
             headers: {
                 "Authorization": `Bearer ${infoUser.token}`
             }
         }
-
+        if(indexDiasSelecionados === []){
+            return(
+                alert("Pelo menos um dia deve ser selecionado")
+            )
+        };
         const requisicao = axios.post(`${urlAPI}habits`, {
             name: nome,
             days: indexDiasSelecionados
         }, config)
         requisicao.then((e) => console.log(e))
         requisicao.catch((e) => console.log(e))
+        setIsActiveNewHabit(!isActiveNewHabit);
     }
 
     return (
@@ -41,7 +44,7 @@ export default function SettingUpHabit() {
                 key={index}/>)}
             </ContainerSemana>
             <div>
-                <div onClick={() => (alert("cancelado"))}>Cancelar</div>
+                <div onClick={() => setIsActiveNewHabit(!isActiveNewHabit)}>Cancelar</div>
                 <SaveButton onClick={() => sendHabit()}>Salvar</SaveButton>
             </div>
         </Container>

@@ -2,13 +2,13 @@ import styled from "styled-components"
 import { useContext } from "react"
 import { AuthContext } from "../context/auth"
 
-export default function Header() {
-    const {InfoUser} = useContext(AuthContext);
+export default function Header(props) {
+    const {imagem} = props;
 
     return(
         <Container>
             <p>TrackIt</p>
-            <img src={null}/>
+            <img src={imagem}/>
         </Container>
     )
 }

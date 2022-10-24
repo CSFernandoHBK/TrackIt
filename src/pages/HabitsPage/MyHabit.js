@@ -7,7 +7,7 @@ import { AuthContext } from "../../context/auth";
 import axios from "axios";
 
 export default function MyHabit(props) {
-    const {name, days, id} = props;
+    const {name, days, id, setRender, render} = props;
     const {infoUser} = useContext(AuthContext);
 
     function verificarDia(index){
@@ -25,9 +25,13 @@ export default function MyHabit(props) {
             }
         }
 
-        const requisicao = axios.delete(`${urlAPI}habits/${id}`, config)
-        requisicao.then((e) => console.log(e))
-        requisicao.catch((e) => console.log(e))
+        if(window.confirm("Deseja excluir esse hábito?")){
+            const requisicao = axios.delete(`${urlAPI}habits/${id}`, config)
+            requisicao.then((e) => console.log(e))
+            requisicao.catch((e) => console.log(e))
+
+            setRender(!render);   
+        }
     }
 
     return (

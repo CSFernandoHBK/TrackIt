@@ -22,7 +22,7 @@ export default function RegistrationPage() {
             password: password
         })
         requisicao.then(() => navigate("/"))
-        requisicao.catch((erro) => console.log(erro))
+        requisicao.catch((erro) => alert(erro.response.data.details[0]))
     }
 
     return(

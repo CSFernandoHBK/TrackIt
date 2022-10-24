@@ -6,7 +6,7 @@ import { AuthContext } from "../../context/auth";
 import completed from "../../assets/images/completed.png";
 
 export default function HabitCard(props) {
-    const {name, id, done, currentSequence, highestSequence} = props;
+    const {name, id, done, currentSequence, highestSequence, quantHabConcluidos, setquantHabConcluidos} = props;
     const {infoUser} = useContext(AuthContext);
     const [concluido, setConcluido] = useState(done);
     const [seqAtual, setSeqAtual] = useState(currentSequence);
@@ -25,6 +25,23 @@ export default function HabitCard(props) {
         
         setConcluido(!concluido)
         setSeqAtual(seqAtual + 1);
+        setquantHabConcluidos(quantHabConcluidos + 1);
+    }
+
+    function uncompleteHabit(){
+        const config = {
+            headers: {
+                "Authorization": `Bearer ${infoUser.token}`
+            }
+        }
+
+        const requisicao = axios.post(`${urlAPI}habits/${id}/uncheck`, {}, config)
+        requisicao.then((e) => console.log(e))
+        requisicao.catch((e) => console.log(e))
+        
+        setConcluido(!concluido)
+        setSeqAtual(seqAtual - 1);
+        setquantHabConcluidos(quantHabConcluidos - 1);
     }
 
     if(seqAtual > seqMaisAlta){
@@ -38,7 +55,7 @@ export default function HabitCard(props) {
                 <h2>Sequência atual: {seqAtual} dias</h2>
                 <h2>Seu recorde: {seqMaisAlta} dias</h2>
             </div>
-            <div onClick={() => completeHabit()}>
+            <div onClick={concluido ? () => uncompleteHabit() : () => completeHabit()}>
                 <img src={completed}/>
             </div>
         </Container>

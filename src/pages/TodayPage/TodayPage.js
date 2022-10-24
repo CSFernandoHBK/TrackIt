@@ -7,16 +7,14 @@ import { AuthContext } from "../../context/auth";
 import { urlAPI } from "../../constants/urls";
 import axios from "axios";
 import dayjs from "dayjs";
+import locale from "../../../node_modules/dayjs/locale/pt-br";
 
 export default function TodayPage() {
     const {infoUser} = useContext(AuthContext);
     const [habitosHoje, setHabitosHoje] = useState([]);
+    const [quantHabConcluidos, setquantHabConcluidos] = useState(habitosHoje.length);
     
-    dayjs.locale('pt-br')
-    let now = dayjs().format('dddd, DD/MM')
-    // console.log(dayjs().day())
-    // console.log(dayjs().date())
-    // console.log(dayjs().month())
+    let now = dayjs().locale("pt-br").format('dddd, DD/MM');
 
     const config = {
         headers: {
@@ -40,11 +38,18 @@ export default function TodayPage() {
 
     return(
         <Container>
-            <Header/>
+            <Header imagem={infoUser.image}/>
             <Content>
                 <div>
                     <h1>{now}</h1>
-                    <h2>Nenhum hábito concluído ainda</h2>
+                    <h2>
+                        {quantHabConcluidos === 0 
+                        ?
+                        "Nenhum habito concluído ainda"
+                        :
+                        (`${quantHabConcluidos/habitosHoje.length} concluidos hoje`)
+                        }
+                    </h2>
                 </div>
                 {habitosHoje.map((h, index) => 
                 <HabitCard 
@@ -53,6 +58,8 @@ export default function TodayPage() {
                 done={h.done}
                 currentSequence={h.currentSequence}
                 highestSequence={h.highestSequence}
+                quantHabConcluidos={quantHabConcluidos}
+                setquantHabConcluidos={setquantHabConcluidos}
                 key={index}
                 />)}
             </Content>
@@ -63,8 +70,9 @@ export default function TodayPage() {
 
 const Container = styled.div`
     background: #E5E5E5;
-    height: 100vh;
     width: 100vw;
+    height: 90vh;
+    padding-bottom: 120px;
 `
 
 const Content = styled.div`
