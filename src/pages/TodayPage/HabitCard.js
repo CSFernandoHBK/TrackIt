@@ -6,11 +6,21 @@ import { AuthContext } from "../../context/auth";
 import completed from "../../assets/images/completed.png";
 
 export default function HabitCard(props) {
-    const {name, id, done, currentSequence, highestSequence, quantHabConcluidos, setquantHabConcluidos} = props;
+    const {name, id, done, currentSequence, highestSequence, setHabitosHoje} = props;
     const {infoUser} = useContext(AuthContext);
     const [concluido, setConcluido] = useState(done);
-    const [seqAtual, setSeqAtual] = useState(currentSequence);
-    const [seqMaisAlta, setSeqMaisAlta] = useState(highestSequence);
+
+    function renderizarHabitos(){
+        const config = {
+            headers: {
+                "Authorization": `Bearer ${infoUser.token}`
+            }
+        }
+        
+        const requisicao = axios.get(`${urlAPI}habits/today`, config);
+        requisicao.then((e) => setHabitosHoje(e.data));
+        requisicao.catch((e) => alert(e.response.data.message));
+    }
 
     function completeHabit(){
         const config = {
@@ -20,12 +30,10 @@ export default function HabitCard(props) {
         }
 
         const requisicao = axios.post(`${urlAPI}habits/${id}/check`, {}, config)
-        requisicao.then((e) => console.log(e))
+        requisicao.then((e) => renderizarHabitos())
         requisicao.catch((e) => console.log(e))
         
         setConcluido(!concluido)
-        setSeqAtual(seqAtual + 1);
-        setquantHabConcluidos(quantHabConcluidos + 1);
     }
 
     function uncompleteHabit(){
@@ -36,24 +44,18 @@ export default function HabitCard(props) {
         }
 
         const requisicao = axios.post(`${urlAPI}habits/${id}/uncheck`, {}, config)
-        requisicao.then((e) => console.log(e))
+        requisicao.then((e) => renderizarHabitos())
         requisicao.catch((e) => console.log(e))
         
         setConcluido(!concluido)
-        setSeqAtual(seqAtual - 1);
-        setquantHabConcluidos(quantHabConcluidos - 1);
-    }
-
-    if(seqAtual > seqMaisAlta){
-        setSeqMaisAlta(seqMaisAlta+1);
     }
 
     return(
-        <Container concluido={concluido}>
+        <Container concluido={concluido} currentSequence={currentSequence} highestSequence={highestSequence}>
             <div>
                 <h1>{name}</h1>
-                <h2>Sequência atual: {seqAtual} dias</h2>
-                <h2>Seu recorde: {seqMaisAlta} dias</h2>
+                <h2>Sequência atual: {currentSequence} dias</h2>
+                <h3>Seu recorde: {highestSequence} dias</h3>
             </div>
             <div onClick={concluido ? () => uncompleteHabit() : () => completeHabit()}>
                 <img src={completed}/>
@@ -98,6 +100,12 @@ const Container = styled.div`
     h2{
         font-size: 12.976px;
         line-height: 16px;
-        color: #666666;
+        color: ${(props) => (props.concluido ? "#8FC549" : "#666666")};
+    }
+
+    h3{
+        font-size: 12.976px;
+        line-height: 16px;
+        color: #666666/*${(props) => ((props.currentSequence >= props.highestSequence) ? "#8FC549" : "#666666")};*/
     }
 `

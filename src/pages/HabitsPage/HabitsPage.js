@@ -24,15 +24,7 @@ export default function HabitsPage() {
         const requisicao = axios.get(`${urlAPI}habits`, config);
         requisicao.then((e) => setListaHabitos(e.data));
         requisicao.catch((e) => alert(e.response.data.message));
-    }, [render]);
-
-    if(listaHabitos === null){
-        return(
-            <h3>
-                Você não tem nenhum hábito
-            </h3>
-        )
-    }
+    }, []);
 
     return (
         <Container>
@@ -47,14 +39,20 @@ export default function HabitsPage() {
                 isActiveNewHabit={isActiveNewHabit}
                 setIsActiveNewHabit={setIsActiveNewHabit}
                 render={render}
-                setRender={setRender}/> 
+                setRender={setRender}
+                setListaHabitos={setListaHabitos}/> 
                 : null)}
+                {listaHabitos.length === 0 
+                ? 
+                <h3>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</h3> 
+                : null}
                 {listaHabitos.map((h, index) => 
                 <MyHabit name={h.name} 
                 days={h.days} 
                 id={h.id}
                 setRender={setRender}
                 render={render}
+                setListaHabitos={setListaHabitos}
                 key={index}
                 />)}
             </Content>
@@ -66,10 +64,12 @@ export default function HabitsPage() {
 const Container = styled.div`
     background: #E5E5E5;
     width: 100vw;
-    padding-bottom: 120px;
+    height: 100vh;
 `
 
 const Content = styled.div`
+    padding-bottom: 120px;
+
     & > div:nth-child(1){
         display:flex;
         justify-content: space-between;
@@ -96,6 +96,13 @@ const Content = styled.div`
         line-height: 34px;
         text-align: center;
         color: #FFFFFF;
+    }
+
+    h3{
+        font-size: 17.976px;
+        line-height: 22px;
+        color: #666666;
+        padding: 0 18px 0;
     }
 `
 

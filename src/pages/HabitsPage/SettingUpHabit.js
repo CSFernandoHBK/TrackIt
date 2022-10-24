@@ -7,10 +7,22 @@ import { urlAPI } from "../../constants/urls";
 import { AuthContext } from "../../context/auth";
 
 export default function SettingUpHabit(props) {
-    const {isActiveNewHabit, setIsActiveNewHabit, render, setRender} = props;
+    const {isActiveNewHabit, setIsActiveNewHabit, render, setRender, setListaHabitos} = props;
     const {infoUser} = useContext(AuthContext);
     const [nome, setNome] = useState("");
     const [indexDiasSelecionados, setIndexDiasSelecionados] = useState([]);
+    const [mostrarOkCriado, setMostrarOkCriado] = useState(false);
+
+    function renderizarHabitos(){
+        const config = {
+            headers: {
+                "Authorization": `Bearer ${infoUser.token}`
+            }
+        }
+        const requisicao = axios.get(`${urlAPI}habits`, config);
+        requisicao.then((e) => setListaHabitos(e.data));
+        requisicao.catch((e) => alert(e.response.data.message));
+    }
 
     function sendHabit(){
         const config = {
@@ -27,12 +39,26 @@ export default function SettingUpHabit(props) {
             name: nome,
             days: indexDiasSelecionados
         }, config)
-        requisicao.then((e) => console.log(e))
+        requisicao.then((e) => renderizarHabitos())
         requisicao.catch((e) => console.log(e))
         setIsActiveNewHabit(!isActiveNewHabit);
     }
 
+    function mostrarOK(e){
+        if(e === 201){
+            setMostrarOkCriado(!mostrarOkCriado);
+        }
+    }
+
     return (
+        <>
+        {mostrarOkCriado 
+        ?
+        <Container>
+            <h1>Habito criado!</h1>
+            <SaveButton onClick={() => setMostrarOkCriado(!mostrarOkCriado)}>OK</SaveButton>
+        </Container>
+        :
         <Container>
             <input value={nome} onChange={(e) => setNome(e.target.value)} placeholder="nome do hábito" />
             <ContainerSemana>
@@ -48,6 +74,8 @@ export default function SettingUpHabit(props) {
                 <SaveButton onClick={() => sendHabit()}>Salvar</SaveButton>
             </div>
         </Container>
+        }
+        </>
     )
 }
 

@@ -1,11 +1,19 @@
 import { Link } from "react-router-dom"
 import styled from "styled-components"
+import { buildStyles, CircularProgressbar, CircularProgressbarWithChildren } from 'react-circular-progressbar';
 
 export default function Footer() {
-    return(
+
+    const value = 0.65;
+
+    return (
         <Container>
             <Link to={"/habitos"}><p>Hábitos</p></Link>
-            <Link to={"/hoje"}><HabitMeter>Hoje</HabitMeter></Link>
+            <Link to={"/hoje"}>
+                <HabitMeter>
+                    Hoje
+                </HabitMeter>
+            </Link>
             <Link to={"/historico"}><p>Histórico</p></Link>
         </Container>
     )
@@ -46,4 +54,10 @@ const HabitMeter = styled.div`
     font-size: 17.976px;
     line-height: 22px;
     color: #FFFFFF;
+
+    svg{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 `
